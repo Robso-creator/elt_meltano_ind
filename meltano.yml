@@ -10,3 +10,38 @@ plugins:
   - name: tap-csv
     variant: meltanolabs
     pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
+    config:
+      csv_files_definition: ./data/extract/csv_files_definition.json
+  - name: tap-postgres
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/tap-postgres.git
+    settings:
+    - name: filter_schemas
+      value: [public]
+    config:
+      host: localhost
+      database: elt_meltano
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+    select:
+    - '*.*'
+  - name: tap-parquet
+    variant: ae-nv
+    pip_url: git+https://github.com/AE-nv/tap-parquet.git
+    config:
+      filepath: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
+  loaders:
+  - name: target-postgres
+    variant: meltanolabs
+    pip_url: meltanolabs-target-postgres
+    config:
+      host: localhost
+      database: elt_meltano
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      default_schema: analytics
+  - name: target-parquet
+    variant: automattic
+    pip_url: git+https://github.com/Automattic/target-parquet.git
+    config:
+      destination_path: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
