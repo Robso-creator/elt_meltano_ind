@@ -67,4 +67,4 @@ jobs:
       - tap-postgres target-singer-jsonl
   - name: load_to_postgres
     tasks:
-      - tap-singer-jsonl targeet-postgres
+      - tap-singer-jsonl target-postgres
