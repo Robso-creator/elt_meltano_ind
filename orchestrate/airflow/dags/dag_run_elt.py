@@ -3,16 +3,23 @@ import subprocess
 from datetime import datetime
 from datetime import timedelta
 
+import pytz
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
 
-def extract_postgres_to_jsonl():
+def get_current_local_time():
+    return datetime.now(pytz.timezone('America/Sao_Paulo')).replace(tzinfo=None)
+
+
+def extract_postgres_to_jsonl(run_date=get_current_local_time().strftime('%Y-%m-%d')):
+    run_date = datetime.strptime(run_date, '%Y-%m-%d')
+
     env = os.environ.copy()
     env['SOURCE'] = 'postgres'
-    env['YEAR'] = '2025'
-    env['MONTH'] = '01'
-    env['DAY'] = '01'
+    env['YEAR'] = run_date.strftime('%Y')
+    env['MONTH'] = run_date.strftime('%m')
+    env['DAY'] = run_date.strftime('%d')
 
     subprocess.run(
         [
@@ -25,12 +32,14 @@ def extract_postgres_to_jsonl():
     )
 
 
-def extract_csv_to_jsonl():
+def extract_csv_to_jsonl(run_date=get_current_local_time().strftime('%Y-%m-%d')):
+    run_date = datetime.strptime(run_date, '%Y-%m-%d')
+
     env = os.environ.copy()
     env['SOURCE'] = 'csv'
-    env['YEAR'] = '2025'
-    env['MONTH'] = '01'
-    env['DAY'] = '01'
+    env['YEAR'] = run_date.strftime('%Y')
+    env['MONTH'] = run_date.strftime('%m')
+    env['DAY'] = run_date.strftime('%d')
 
     subprocess.run(
         [
@@ -43,12 +52,13 @@ def extract_csv_to_jsonl():
     )
 
 
-def load_jsonl_to_postgres():
+def load_jsonl_to_postgres(run_date=get_current_local_time().strftime('%Y-%m-%d')):
+    run_date = datetime.strptime(run_date, '%Y-%m-%d')
+
     env = os.environ.copy()
-    env['SOURCE'] = 'csv'
-    env['YEAR'] = '2025'
-    env['MONTH'] = '01'
-    env['DAY'] = '01'
+    env['YEAR'] = run_date.strftime('%Y')
+    env['MONTH'] = run_date.strftime('%m')
+    env['DAY'] = run_date.strftime('%d')
 
     subprocess.run(
         [
@@ -77,18 +87,23 @@ with DAG(
     start_date=start,
     schedule=cron,
     description=description,
+    render_template_as_native_obj=True,
+    params={'run_date': get_current_local_time().strftime('%Y-%m-%d')},
 ) as dag:
     extract_postgres = PythonOperator(
         task_id='extract_postgres',
         python_callable=extract_postgres_to_jsonl,
+        op_kwargs={'run_date': '{{ params.run_date }}'},
     )
     extract_csv = PythonOperator(
         task_id='extract_csv',
         python_callable=extract_csv_to_jsonl,
+        op_kwargs={'run_date': '{{ params.run_date }}'},
     )
     load_jsonl = PythonOperator(
         task_id='load_jsonl',
         python_callable=load_jsonl_to_postgres,
+        op_kwargs={'run_date': '{{ params.run_date }}'},
         trigger_rule='all_success',
     )
 
