@@ -46,6 +46,7 @@ repos:
       - id: check-toml
       - id: check-xml
       - id: end-of-file-fixer
+        exclude: ^orchestrate/airflow/airflow-webserver.pid
       - id: detect-aws-credentials
         args: [ "--allow-missing-credentials" ]
       - id: detect-private-key
