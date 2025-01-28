@@ -1,10 +1,10 @@
 [
-    {
-        "entity": "public-order_details",
-        "path": "./data/extract/order_details.csv",
-        "keys": [
-            "order_id",
-            "product_id"
-        ]
-    }
+  {
+    "entity": "public-order_details",
+    "keys": [
+      "order_id",
+      "product_id"
+    ],
+    "path": "./data/extract/order_details.csv"
+  }
 ]

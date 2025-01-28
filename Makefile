@@ -20,3 +20,7 @@ down:
 	@echo "[DOWN]"
 	@echo "docker compose down"
 	@docker compose down  --remove-orphans
+
+pc:
+	@echo "pre-commit"
+	@pre-commit run --all-files

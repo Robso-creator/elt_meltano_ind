@@ -49,7 +49,7 @@ plugins:
         folder: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
   - name: target-postgres
     variant: transferwise
-    pip_url: 
+    pip_url:
       git+https://github.com/transferwise/pipelinewise.git#subdirectory=singer-connectors/target-postgres
     config:
       dbname: elt_meltano
