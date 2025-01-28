@@ -25,23 +25,46 @@ plugins:
       password: ${POSTGRES_PASSWORD}
     select:
     - '*.*'
-  - name: tap-parquet
-    variant: ae-nv
-    pip_url: git+https://github.com/AE-nv/tap-parquet.git
+  - name: tap-singer-jsonl
+    variant: kgpayne
+    pip_url: tap-singer-jsonl
     config:
-      filepath: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
+      local:
+        folders:
+        - ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/public-orders
+        - ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/public-order_details
+        recursive: true
   loaders:
-  - name: target-postgres
-    variant: meltanolabs
-    pip_url: meltanolabs-target-postgres
-    config:
-      host: localhost
-      database: elt_meltano
-      user: ${POSTGRES_USER}
-      password: ${POSTGRES_PASSWORD}
-      default_schema: analytics
-  - name: target-parquet
-    variant: automattic
-    pip_url: git+https://github.com/Automattic/target-parquet.git
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl
     config:
       destination_path: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
+      do_timestamp_file: true
+  - name: target-singer-jsonl
+    variant: kgpayne
+    pip_url: target-singer-jsonl
+    config:
+      local:
+        folder: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
+  - name: target-postgres
+    variant: transferwise
+    pip_url: 
+      git+https://github.com/transferwise/pipelinewise.git#subdirectory=singer-connectors/target-postgres
+    config:
+      dbname: elt_meltano
+      host: localhost
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      default_target_schema: analytics
+
+jobs:
+  - name: extract_csv
+    tasks:
+      - tap-csv target-singer-jsonl
+  - name: extract_postgres
+    tasks:
+      - tap-postgres target-singer-jsonl
+  - name: load_to_postgres
+    tasks:
+      - tap-singer-jsonl targeet-postgres

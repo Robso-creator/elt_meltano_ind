@@ -1,6 +1,7 @@
 /venv
 /.meltano
 .env
+dbdata
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

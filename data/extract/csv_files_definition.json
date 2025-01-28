@@ -1,13 +1,8 @@
 [
     {
         "entity": "public-order_details",
-        "path": "./extract/order_details.csv",
+        "path": "./data/extract/order_details.csv",
         "keys": [
-            "order_id",
-            "product_id"
-        ],
-        "delimiter": ",",
-        "primary_keys": [
             "order_id",
             "product_id"
         ]
