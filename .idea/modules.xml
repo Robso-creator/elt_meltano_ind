@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/elt_meltano_ind.iml" filepath="$PROJECT_DIR$/.idea/elt_meltano_ind.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../etl_mobilidade/.idea/etl_mobilidade.iml" filepath="$PROJECT_DIR$/../../etl_mobilidade/.idea/etl_mobilidade.iml" />
-    </modules>
-  </component>
-</project>
