@@ -9,7 +9,6 @@ up:
 	@echo "[UP]"
 	@echo "docker compose up -d"
 	@docker compose up -d
-	@echo "wait 10 seconds and go -> http://localhost:9004/ for minio"
 
 stop:
 	@echo "[STOP]"

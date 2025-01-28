@@ -5,6 +5,7 @@ environments:
 - name: dev
 - name: staging
 - name: prod
+
 plugins:
   extractors:
   - name: tap-csv
@@ -12,6 +13,7 @@ plugins:
     pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
     config:
       csv_files_definition: ./data/extract/csv_files_definition.json
+
   - name: tap-postgres
     variant: meltanolabs
     pip_url: git+https://github.com/MeltanoLabs/tap-postgres.git
@@ -25,15 +27,17 @@ plugins:
       password: ${POSTGRES_PASSWORD}
     select:
     - '*.*'
+
   - name: tap-singer-jsonl
     variant: kgpayne
     pip_url: tap-singer-jsonl
     config:
       local:
         folders:
-        - ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/public-orders
-        - ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/public-order_details
+        - ./data/output/postgres/$YEAR/$MONTH/$DAY/public-orders
+        - ./data/output/csv/$YEAR/$MONTH/$DAY/public-order_details
         recursive: true
+
   loaders:
   - name: target-jsonl
     variant: andyh1203
@@ -41,12 +45,14 @@ plugins:
     config:
       destination_path: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
       do_timestamp_file: true
+
   - name: target-singer-jsonl
     variant: kgpayne
     pip_url: target-singer-jsonl
     config:
       local:
         folder: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
+
   - name: target-postgres
     variant: transferwise
     pip_url:
@@ -58,13 +64,22 @@ plugins:
       password: ${POSTGRES_PASSWORD}
       default_target_schema: analytics
 
+  utilities:
+  - name: airflow
+    variant: apache
+    pip_url: git+https://github.com/meltano/airflow-ext.git@main apache-airflow==2.8.1
+      --constraint
+      https://raw.githubusercontent.com/apache/airflow/constraints-2.8.1/constraints-no-providers-${MELTANO__PYTHON_VERSION}.txt
+    config:
+      core:
+        dags_are_paused_at_creation: true
 jobs:
-  - name: extract_csv
-    tasks:
-      - tap-csv target-singer-jsonl
-  - name: extract_postgres
-    tasks:
-      - tap-postgres target-singer-jsonl
-  - name: load_to_postgres
-    tasks:
-      - tap-singer-jsonl target-postgres
+- name: extract-csv-to-jsonl
+  tasks:
+  - tap-csv target-singer-jsonl
+- name: extract-postgres-to-jsonl
+  tasks:
+  - tap-postgres target-singer-jsonl
+- name: load-jsonl-to-postgres
+  tasks:
+  - tap-singer-jsonl target-postgres
