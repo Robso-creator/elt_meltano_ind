@@ -36,6 +36,15 @@ ___
 
 ![img](./docs/fluxograma.jpeg)
 
+### Why was JSONL chosen?
+
+**JSONL (JSON Lines)** was selected as the data storage format for this project because it is more flexible and works well in modern pipelines. Here are the main reasons:
+
+1. **Simple Structure**: It allows storing complex and nested data, such as lists and objects, without "flattening" the data.
+2. **Stream Processing**: Each line is an independent JSON object, making it suitable for processing large datasets without loading everything into memory.
+3. **Compatibility**: It is widely supported by modern ETL tools and APIs, making integration easier.
+4. **Easy Debugging**: An error in one line does not affect the entire file, making it easier to identify and fix issues.
+
 ## Setup
 
 1. **Clone the repository**:

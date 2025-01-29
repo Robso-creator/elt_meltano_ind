@@ -36,6 +36,15 @@ ___
 
 ![img](./docs/fluxograma.jpeg)
 
+### Por que o JSONL foi escolhido?
+
+**JSONL (JSON String)** como formato de armazenamento de dados para este projeto porque é mais flexível e funciona bem em pipelines modernos. Aqui estão os principais motivos:
+
+1. **Estrutura simples**: Você pode armazenar dados locais complexos, como cálculos e objetos, sem "corromper" os dados.
+2. **Processamento em FLuxo**: Cada linha é um objeto JSON estático, adequado para processar grandes conjuntos de dados sem carregar o objeto inteiro na memória.
+3. **Compatibilidade**: É bem suportado por ferramentas ETL e APIs modernas, facilitando a integração.
+4. **Depuração fácil***: Um erro de linha única não afeta todos os dados, facilitando a identificação e a correção de problemas
+
 ## Configuração
 
 1. **Clone o repositório**:
