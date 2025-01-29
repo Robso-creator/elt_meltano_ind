@@ -78,6 +78,7 @@ ___
   ![img.png](docs/img_3.png)
 
 - **Streamlit**: Acesse [localhost:8501](http://localhost:8501) para visualizar o aplicativo Streamlit com os resultados processados.
+![img.png](docs/streamlit.png)
 
 ## Executando Meltano no Terminal
 

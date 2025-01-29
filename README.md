@@ -1,5 +1,5 @@
 # ELT with Airflow, Meltano, Streamlit, and PostgreSQL
-<sub>Não fala Inglês? [Clique aqui](https://github.com/Robso-creator/elt_meltano_ind/blob/main/docs/README-en.md)
+<sub>Não fala Inglês? [Clique aqui](https://github.com/Robso-creator/elt_meltano_ind/blob/main/docs/README-en.md) to view
 para ver essa página em Português</sub>
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
@@ -78,6 +78,7 @@ ___
   ![img.png](docs/img_3.png)
 
 - **Streamlit**: Access [localhost:8501](http://localhost:8501) to view the Streamlit application with the processed results.
+![img.png](docs/streamlit.png)
 
 ## Running Meltano in the Terminal
 
