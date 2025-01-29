@@ -64,6 +64,21 @@ services:
       - "8080:8080"
     restart: unless-stopped
 
+  streamlit-app:
+    image: streamlit_app:1.0
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"
+    user: "1000:1000"
+    networks:
+      docker_network:
+    depends_on:
+      postgres:
+        condition: service_healthy
+      meltano-install:
+        condition: service_completed_successfully
 
 networks:
   docker_network:
