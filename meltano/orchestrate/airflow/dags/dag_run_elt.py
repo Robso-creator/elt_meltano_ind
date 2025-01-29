@@ -1,7 +1,6 @@
 import os
 import subprocess
 from datetime import datetime
-from datetime import timedelta
 
 import pytz
 from airflow import DAG
@@ -79,10 +78,7 @@ with DAG(
     'dag_elt_meltano_pipeline',
     default_args={
         'owner': 'airflow',
-        'catchup': False,
-        'retries': 3,
-        'retry_delay': timedelta(minutes=5),
-        'concurrency': 1,
+        'retries': 0,
     },
     start_date=start,
     schedule=cron,
