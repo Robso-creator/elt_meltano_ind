@@ -7,7 +7,7 @@ para ver essa página em Português</sub>
 [![docker](https://img.shields.io/badge/docker-enabled-brightgreen?logo=docker&logoColor=blue)](https://www.docker.com/)
 [![postgresql](https://img.shields.io/badge/postgresql-enabled-brightgreen?logo=postgresql&logoColor=blue)](https://www.postgresql.org/)
 
-This project is a solution for data extraction, transformation, and loading (ETL) using Airflow, Meltano, Streamlit, and PostgreSQL. It allows extracting data from different sources, loading it into a PostgreSQL database, and visualizing the results in a Streamlit application.
+This project is a solution for data extraction, transformation, and loading (ELT) using Airflow, Meltano, Streamlit, and PostgreSQL. It allows extracting data from different sources, loading it into a PostgreSQL database, and visualizing the results in a Streamlit application.
 
 It includes the Pre-Commit framework to manage and maintain pre-commit hooks, ensuring code that follows standards established by the Python community.
 
