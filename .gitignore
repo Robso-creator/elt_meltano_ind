@@ -1,8 +1,7 @@
 /venv
-/.meltano
+/meltano/.meltano
 .env
-dbdata
-orchestrate/airflow/airflow.cfg
+/meltano/orchestrate/airflow/airflow.cfg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

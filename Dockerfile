@@ -16,7 +16,7 @@ ENV LANG=pt_BR.UTF-8 \
 RUN mkdir -p /src/
 
 COPY streamlit_app/ src/
-RUN pip install -r src/app_requirements.txt
+RUN pip install -r src/requirements/requirements.txt
 
 ENTRYPOINT []
 CMD ["streamlit", "run", "src/app.py"]
