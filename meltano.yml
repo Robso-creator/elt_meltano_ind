@@ -21,7 +21,7 @@ plugins:
     - name: filter_schemas
       value: [public]
     config:
-      host: localhost
+      host: 172.19.0.20
       database: elt_meltano
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
@@ -59,7 +59,7 @@ plugins:
       git+https://github.com/transferwise/pipelinewise.git#subdirectory=singer-connectors/target-postgres
     config:
       dbname: elt_meltano
-      host: localhost
+      host: 172.19.0.20
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
       default_target_schema: analytics

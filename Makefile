@@ -3,6 +3,7 @@ all:
 	@echo "make up ............................ docker compose up -d"
 	@echo "make stop .......................... docker compose stop"
 	@echo "make down .......................... docker compose down"
+	@echo "make du ............................ down up"
 	@echo "make rm ............................ remove all stopped containers and dangling volumes"
 	@echo "make pc ............................ pre-commit"
 	@echo "make logs-webserver ................ show logs webserver"
@@ -23,6 +24,8 @@ down:
 	@echo "[DOWN]"
 	@echo "docker compose down"
 	@docker compose down  --remove-orphans
+
+du: down up
 
 pc:
 	@echo "pre-commit"
