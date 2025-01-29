@@ -1,23 +1,123 @@
-SOURCE=postgres YEAR=2025 MONTH=01 DAY=03 meltano run tap-postgres target-parquet
+# ELT com Airflow, Meltano, Streamlit e PostgreSQL
+<sub>Don't speak Portuguese? [Click here](https://github.com/Robso-creator/elt_meltano_ind/blob/main/docs/README-en.md) to view
+this page in English</sub>
 
-SOURCE=csv YEAR=2025 MONTH=01 DAY=01 meltano run tap-csv target-parquet
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+![makefile](https://img.shields.io/badge/makefile-enabled-brightgreen?logo=gmail&logoColor=blue)
+[![docker](https://img.shields.io/badge/docker-enabled-brightgreen?logo=docker&logoColor=blue)](https://www.docker.com/)
+[![postgresql](https://img.shields.io/badge/postgresql-enabled-brightgreen?logo=postgresql&logoColor=blue)](https://www.postgresql.org/)
 
+Este projeto é uma solução para extração, transformação e carregamento de dados (ETL) utilizando Airflow, Meltano, Streamlit e PostgreSQL. Ele permite extrair dados de diferentes fontes, carregá-los em um banco de dados PostgreSQL e visualizar os resultados em um aplicativo Streamlit.
 
-meltano
-meltano lock --update --all
-meltano install
+Conta com framework Pre-Commit para gerenciar e manter hooks de pre-commit, garantindo códigos que seguem padrões estabelecidos pela comunidade Python.
 
-airflow
-meltano invoke airflow:initialize
-meltano invoke airflow users create -u admin@localhost -p password --role Admin -e admin@localhost -f admin -l admin
+---
 
-streamlit app
-http://172.19.0.3:8501
+## Tabela de Conteúdos
 
-webserver
-se: Error: Already running on PID 15 (or pid file '/project/orchestrate/airflow/airflow-webserver.pid' is stale
-make down
-sudo lsof -i tcp:8080
-sudo kill -9 PID -- se houver algo usando porta 8080
-deletar o arquivo airflow-webserver.pid
-make up
+- [Pré-requisitos](#pré-requisitos)
+- [Arquitetura do Projeto](#arquitetura-do-projeto)
+- [Configuração](#configuração)
+- [Acesso aos Serviços](#acesso-aos-serviços)
+- [Executando Meltano no Terminal](#executando-meltano-no-terminal)
+- [Encerrando os Serviços](#encerrando-os-serviços)
+- [Solução de Problemas](#solução-de-problemas)
+- [Contribuição](#contribuição)
+
+___
+
+## Pré-requisitos
+
+- Docker
+- Docker Compose
+- Make (opcional, mas recomendado)
+
+## Arquitetura do Projeto
+
+![img](./docs/fluxograma.jpeg)
+
+## Configuração
+
+1. **Crie o arquivo `.env` na raiz do projeto** com o seguinte conteúdo:
+
+    ```bash
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD=postgres
+    ```
+
+2. **Verifique a versão do Docker** para garantir que ele está instalado corretamente:
+
+    ```bash
+    docker --version
+    ```
+
+3. **Construa a imagem do Streamlit** e inicie os contêineres:
+
+    ```bash
+    make build  # Construir a imagem do Streamlit
+    make up     # Iniciar os contêineres
+    ```
+
+## Acesso aos Serviços
+
+- **Airflow**: Acesse [localhost:8080](http://localhost:8080) para gerenciar e executar os DAGs que extraem dados das fontes e os carregam no banco de dados.
+
+- **Streamlit**: Acesse [localhost:8501](http://localhost:8501) para visualizar o aplicativo Streamlit com os resultados processados.
+
+## Executando Meltano no Terminal
+
+Para executar o Meltano diretamente no terminal, utilize os seguintes comandos:
+
+```bash
+make enter-local
+SOURCE=postgres YEAR=2025 MONTH=01 DAY=03 meltano run extract-postgres-to-jsonl
+SOURCE=csv YEAR=2025 MONTH=01 DAY=03 meltano run extract-csv-to-jsonl
+YEAR=2025 MONTH=01 DAY=03 meltano run load-jsonl-to-postgres
+```
+
+## Encerrando os Serviços
+
+Para encerrar os contêineres, utilize o comando abaixo:
+
+```bash
+make down   # Encerrar os contêineres
+make rm     # Remover containers parados e volumes
+```
+
+## Solução de Problemas
+
+Caso encontre o erro `Already running on PID <PID>` no servidor web do Airflow, siga os passos abaixo:
+
+1. Pare os contêineres:
+
+    ```bash
+    make down
+    ```
+
+2. Verifique se há algum processo usando a porta 8080:
+
+    ```bash
+    sudo lsof -i tcp:8080
+    ```
+
+3. Se houver um processo, mate-o:
+
+    ```bash
+    sudo kill -9 PID
+    ```
+
+4. Remova o arquivo de PID do Airflow:
+
+    ```bash
+    sudo rm -rf meltano/orchestrate/airflow-webserver.pid
+    ```
+
+5. Reinicie os contêineres:
+
+    ```bash
+    make up
+    ```
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.

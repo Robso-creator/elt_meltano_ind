@@ -11,6 +11,7 @@ x-meltano-image: &meltano-image
 services:
   postgres:
     image: postgres:12
+    container_name: db-postgres
     env_file:
       - .env
     environment:
@@ -33,6 +34,7 @@ services:
 
   meltano-install:
     <<: *meltano-image
+    container_name: meltano-install
     command: install
     networks:
       docker_network:
@@ -42,6 +44,7 @@ services:
 
   airflow-scheduler:
     <<: *meltano-image
+    container_name: airflow-scheduler
     command: invoke airflow scheduler
     networks:
       docker_network:
@@ -54,6 +57,7 @@ services:
 
   airflow-webserver:
     <<: *meltano-image
+    container_name: airflow-webserver
     command: invoke airflow webserver
     networks:
       docker_network:
@@ -68,6 +72,7 @@ services:
 
   streamlit-app:
     image: streamlit_app:1.0
+    container_name: streamlit-app
     restart: always
     env_file:
       - .env

@@ -4,6 +4,7 @@ all:
 	@echo "make stop .......................... docker compose stop"
 	@echo "make down .......................... docker compose down"
 	@echo "make du ............................ down up"
+	@echo "make enter-local ................... enter local"
 	@echo "make rm ............................ remove all stopped containers and dangling volumes"
 	@echo "make pc ............................ pre-commit"
 	@echo "make logs-webserver ................ show logs webserver"
@@ -13,6 +14,10 @@ all:
 	@echo "make phoenix ....................... down | rm | build | up"
 	@echo "make build .......................... build local image docker"
 	@echo ""
+
+build:
+	@echo "Building local image docker..."
+	@docker build -t streamlit_app:1.0 -f "./Dockerfile" "."
 
 up:
 	@echo "[UP]"
@@ -33,6 +38,10 @@ down:
 
 du: down up
 
+enter-local:
+	@echo "Enter local"
+	@docker exec -it airflow-webserver bash
+
 pc:
 	@echo "pre-commit"
 	@pre-commit run --all-files
@@ -51,15 +60,15 @@ rm: down
 
 logs-webserver:
 	@echo "Logs webserver"
-	@docker logs -f elt_meltano_ind-airflow-webserver-1 -f
+	@docker logs -f airflow-webserver -f
 
 logs-scheduler:
 	@echo "Logs webserver"
-	@docker logs -f elt_meltano_ind-airflow-scheduler-1 -f
+	@docker logs -f airflow-scheduler -f
 
 logs-streamlit:
 	@echo "Logs streamlit app"
-	@docker logs -f elt_meltano_ind-streamlit-app-1 -f
+	@docker logs -f streamlit-app -f
 
 reborn:
 	@echo "[REBORN]"
@@ -94,7 +103,3 @@ phoenix:
 	@docker build -t streamlit_app:1.0 -f "./Dockerfile" "."
 	@echo "docker compose up -d"
 	@docker compose up -d
-
-build:
-	@echo "Building local image docker..."
-	@docker build -t streamlit_app:1.0 -f "./Dockerfile" "."

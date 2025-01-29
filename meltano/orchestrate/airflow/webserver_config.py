@@ -20,8 +20,6 @@ from __future__ import annotations
 
 import os
 
-from flask_appbuilder.const import AUTH_DB
-
 # from airflow.www.fab_security.manager import AUTH_LDAP
 # from airflow.www.fab_security.manager import AUTH_OAUTH
 # from airflow.www.fab_security.manager import AUTH_OID
@@ -31,7 +29,7 @@ from flask_appbuilder.const import AUTH_DB
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Flask-WTF flag for CSRF
-WTF_CSRF_ENABLED = True
+WTF_CSRF_ENABLED = False
 WTF_CSRF_TIME_LIMIT = None
 
 # ----------------------------------------------------
@@ -47,13 +45,13 @@ WTF_CSRF_TIME_LIMIT = None
 # AUTH_LDAP : Is for LDAP
 # AUTH_REMOTE_USER : Is for using REMOTE_USER from web server
 # AUTH_OAUTH : Is for OAuth
-AUTH_TYPE = AUTH_DB
+# AUTH_TYPE = AUTH_DB
 
 # Uncomment to setup Full admin role name
 # AUTH_ROLE_ADMIN = 'Admin'
 
 # Uncomment and set to desired role to enable access without authentication
-# AUTH_ROLE_PUBLIC = 'Viewer'
+AUTH_ROLE_PUBLIC = 'Admin'
 
 # Will allow user self registration
 # AUTH_USER_REGISTRATION = True
@@ -112,7 +110,7 @@ AUTH_TYPE = AUTH_DB
 # in order to fully utilize the theme. (or use that property in conjunction with theme)
 # APP_THEME = "bootstrap-theme.css"  # default bootstrap
 # APP_THEME = "amelia.css"
-# APP_THEME = "cerulean.css"
+# APP_THEME = "cerulean.css" horrivel
 # APP_THEME = "cosmo.css"
 # APP_THEME = "cyborg.css"
 # APP_THEME = "darkly.css"
@@ -127,5 +125,5 @@ AUTH_TYPE = AUTH_DB
 # APP_THEME = "solar.css"
 # APP_THEME = "spacelab.css"
 # APP_THEME = "superhero.css"
-# APP_THEME = "united.css"
+APP_THEME = 'united.css'
 # APP_THEME = "yeti.css"
