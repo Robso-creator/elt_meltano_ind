@@ -8,11 +8,18 @@ all:
 	@echo "make pc ............................ pre-commit"
 	@echo "make logs-webserver ................ show logs webserver"
 	@echo "make logs-scheduler ................ show logs scheduler"
+	@echo "make logs-streamlit ................. show logs streamlit app"
+	@echo "make reborn ........................ down | rm | up"
+	@echo "make phoenix ....................... down | rm | build | up"
+	@echo "make build .......................... build local image docker"
+	@echo ""
 
 up:
 	@echo "[UP]"
 	@echo "docker compose up -d"
 	@docker compose up -d
+	@echo "wait 10 seconds and go -> http://localhost:8501/ for streamlit"
+	@echo "wait 10 seconds and go -> http://localhost:8080/ for airflow"
 
 stop:
 	@echo "[STOP]"
