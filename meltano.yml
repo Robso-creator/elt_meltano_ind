@@ -38,6 +38,7 @@ plugins:
         - ./data/output/csv/$YEAR/$MONTH/$DAY/public-order_details
         recursive: true
 
+      add_record_metadata: false
   loaders:
   - name: target-jsonl
     variant: andyh1203
@@ -53,6 +54,7 @@ plugins:
       local:
         folder: ./data/output/$SOURCE/$YEAR/$MONTH/$DAY/
 
+      add_record_metadata: false
   - name: target-postgres
     variant: transferwise
     pip_url:
