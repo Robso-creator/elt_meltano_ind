@@ -79,7 +79,7 @@ with DAG(
     'dag_elt_meltano_pipeline',
     default_args={
         'owner': 'airflow',
-        'catchup': True,
+        'catchup': False,
         'retries': 3,
         'retry_delay': timedelta(minutes=5),
         'concurrency': 1,

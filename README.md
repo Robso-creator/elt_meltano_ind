@@ -38,20 +38,27 @@ ___
 
 ## Configuração
 
-1. **Crie o arquivo `.env` na raiz do projeto** com o seguinte conteúdo:
+1. **Clone o repositório**:
+
+    ```bash
+    git@github.com:Robso-creator/elt_meltano_ind.git
+    cd elt_meltano_ind
+    ```
+
+2. **Crie o arquivo `.env` na raiz do projeto** com o seguinte conteúdo:
 
     ```bash
     POSTGRES_USER=postgres
     POSTGRES_PASSWORD=postgres
     ```
 
-2. **Verifique a versão do Docker** para garantir que ele está instalado corretamente:
+3. **Verifique a versão do Docker** para garantir que ele está instalado corretamente:
 
     ```bash
     docker --version
     ```
 
-3. **Construa a imagem do Streamlit** e inicie os contêineres:
+4. **Construa a imagem do Streamlit** e inicie os contêineres:
 
     ```bash
     make build  # Construir a imagem do Streamlit
@@ -61,7 +68,16 @@ ___
 ## Acesso aos Serviços
 
 - **Airflow**: Acesse [localhost:8080](http://localhost:8080) para gerenciar e executar os DAGs que extraem dados das fontes e os carregam no banco de dados.
+   - Em DAGS, ative o DAG `dag_elt_meltano_pipeline` e espere a execução.
+   - Se desejar rodar para uma data específica, aperte o botão de play no canto direito da tela da DAG.
+  ![img.png](docs/img.png)
+   - Depois escolha a data que deseja rodar e aperte ´Trigger´.
+  ![img.png](docs/img_2.png)
 
+    - Se a algumas das tarefas de extração falhar, a de carregamento **não executará**.
+  ![img.png](docs/img_3.png)
+
+  - A DAG pode ser configurada para rodar infinitamente com `cathup=True` para fins de teste.
 - **Streamlit**: Acesse [localhost:8501](http://localhost:8501) para visualizar o aplicativo Streamlit com os resultados processados.
 
 ## Executando Meltano no Terminal
@@ -86,7 +102,7 @@ make rm     # Remover containers parados e volumes
 
 ## Solução de Problemas
 
-Caso encontre o erro `Already running on PID <PID>` no servidor web do Airflow, siga os passos abaixo:
+Caso não consiga acessar a página do Airflow e no `make logs-webserver` encontre o erro `Already running on PID <PID>`, siga os passos abaixo:
 
 1. Pare os contêineres:
 
