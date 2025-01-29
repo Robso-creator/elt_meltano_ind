@@ -1,88 +1,87 @@
-# ELT com Airflow, Meltano, Streamlit e PostgreSQL
-<sub>Don't speak Portuguese? [Click here](https://github.com/Robso-creator/elt_meltano_ind/blob/main/docs/README-en.md) to view
-this page in English</sub>
+# ELT with Airflow, Meltano, Streamlit, and PostgreSQL
+<sub>Não fala Inglês? [Clique aqui](https://github.com/Robso-creator/elt_meltano_ind/blob/main/docs/README-en.md)
+para ver essa página em Português</sub>
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 ![makefile](https://img.shields.io/badge/makefile-enabled-brightgreen?logo=gmail&logoColor=blue)
 [![docker](https://img.shields.io/badge/docker-enabled-brightgreen?logo=docker&logoColor=blue)](https://www.docker.com/)
 [![postgresql](https://img.shields.io/badge/postgresql-enabled-brightgreen?logo=postgresql&logoColor=blue)](https://www.postgresql.org/)
 
-Este projeto é uma solução para extração, transformação e carregamento de dados (ETL) utilizando Airflow, Meltano, Streamlit e PostgreSQL. Ele permite extrair dados de diferentes fontes, carregá-los em um banco de dados PostgreSQL e visualizar os resultados em um aplicativo Streamlit.
+This project is a solution for data extraction, transformation, and loading (ETL) using Airflow, Meltano, Streamlit, and PostgreSQL. It allows extracting data from different sources, loading it into a PostgreSQL database, and visualizing the results in a Streamlit application.
 
-Conta com framework Pre-Commit para gerenciar e manter hooks de pre-commit, garantindo códigos que seguem padrões estabelecidos pela comunidade Python.
+It includes the Pre-Commit framework to manage and maintain pre-commit hooks, ensuring code that follows standards established by the Python community.
 
 ---
 
-## Tabela de Conteúdos
+## Table of Contents
 
-- [Pré-requisitos](#pré-requisitos)
-- [Arquitetura do Projeto](#arquitetura-do-projeto)
-- [Configuração](#configuração)
-- [Acesso aos Serviços](#acesso-aos-serviços)
-- [Executando Meltano no Terminal](#executando-meltano-no-terminal)
-- [Encerrando os Serviços](#encerrando-os-serviços)
-- [Solução de Problemas](#solução-de-problemas)
-- [Contribuição](#contribuição)
+- [Prerequisites](#prerequisites)
+- [Project Architecture](#project-architecture)
+- [Setup](#setup)
+- [Accessing Services](#accessing-services)
+- [Running Meltano in the Terminal](#running-meltano-in-the-terminal)
+- [Stopping Services](#stopping-services)
+- [Troubleshooting](#troubleshooting)
+- [Contribution](#contribution)
 
 ___
 
-## Pré-requisitos
+## Prerequisites
 
 - Docker
 - Docker Compose
-- Make (opcional, mas recomendado)
+- Make (optional but recommended)
 
-## Arquitetura do Projeto
+## Project Architecture
 
 ![img](./docs/fluxograma.jpeg)
 
-## Configuração
+## Setup
 
-1. **Clone o repositório**:
+1. **Clone the repository**:
 
     ```bash
     git@github.com:Robso-creator/elt_meltano_ind.git
     cd elt_meltano_ind
     ```
 
-2. **Crie o arquivo `.env` na raiz do projeto** com o seguinte conteúdo:
+2. **Create the `.env` file** in the project root with the following content:
 
     ```bash
     POSTGRES_USER=postgres
     POSTGRES_PASSWORD=postgres
     ```
 
-3. **Verifique a versão do Docker** para garantir que ele está instalado corretamente:
+3. **Check the Docker version** to ensure it is installed correctly:
 
     ```bash
     docker --version
     ```
 
-4. **Construa a imagem do Streamlit** e inicie os contêineres:
+4. **Build the Streamlit image** and start the containers:
 
     ```bash
-    make build  # Construir a imagem do Streamlit
-    make up     # Iniciar os contêineres
+    make build  # Build the Streamlit image
+    make up     # Start the containers
     ```
 
-## Acesso aos Serviços
+## Accessing Services
 
-- **Airflow**: Acesse [localhost:8080](http://localhost:8080) para gerenciar e executar os DAGs que extraem dados das fontes e os carregam no banco de dados.
-   - Em DAGS, ative o DAG `dag_elt_meltano_pipeline` e espere a execução.
-   - Se desejar rodar para uma data específica, aperte o botão de play no canto direito da tela da DAG.
+- **Airflow**: Access [localhost:8080](http://localhost:8080) to manage and execute the DAGs that extract data from sources and load it into the database.
+   - In DAGS, enable the `dag_elt_meltano_pipeline` DAG and wait for execution.
+   - If you want to run it for a specific date, click the play button on the right side of the DAG screen.
   ![img.png](docs/img.png)
-   - Depois escolha a data que deseja rodar e aperte ´Trigger´.
+   - Then choose the date you want to run and click ´Trigger´.
   ![img.png](docs/img_2.png)
 
-    - Se a algumas das tarefas de extração falhar, a de carregamento **não executará**.
+    - If any of the extraction tasks fail, the loading task **will not execute**.
   ![img.png](docs/img_3.png)
 
-  - A DAG pode ser configurada para rodar infinitamente com `cathup=True` para fins de teste.
-- **Streamlit**: Acesse [localhost:8501](http://localhost:8501) para visualizar o aplicativo Streamlit com os resultados processados.
+- **Streamlit**: Access [localhost:8501](http://localhost:8501) to view the Streamlit application with the processed results.
 
-## Executando Meltano no Terminal
+## Running Meltano in the Terminal
 
-Para executar o Meltano diretamente no terminal, utilize os seguintes comandos:
+To run Meltano directly in the terminal, use the following commands:
 
 ```bash
 make enter-local
@@ -91,49 +90,49 @@ SOURCE=csv YEAR=2025 MONTH=01 DAY=03 meltano run extract-csv-to-jsonl
 YEAR=2025 MONTH=01 DAY=03 meltano run load-jsonl-to-postgres
 ```
 
-## Encerrando os Serviços
+## Stopping Services
 
-Para encerrar os contêineres, utilize o comando abaixo:
+To stop the containers, use the following command:
 
 ```bash
-make down   # Encerrar os contêineres
-make rm     # Remover containers parados e volumes
+make down   # Stop the containers
+make rm     # Remove stopped containers and volumes
 ```
 
-## Solução de Problemas
+## Troubleshooting
 
-Caso não consiga acessar a página do Airflow e no `make logs-webserver` encontre o erro `Already running on PID <PID>`, siga os passos abaixo:
+If you cannot access the Airflow page and find the error `Already running on PID <PID>` in `make logs-webserver`, follow the steps below:
 
-1. Pare os contêineres:
+1. Stop the containers:
 
     ```bash
     make down
     ```
 
-2. Verifique se há algum processo usando a porta 8080:
+2. Check if any process is using port 8080:
 
     ```bash
     sudo lsof -i tcp:8080
     ```
 
-3. Se houver um processo, mate-o:
+3. If there is a process, kill it:
 
     ```bash
     sudo kill -9 PID
     ```
 
-4. Remova o arquivo de PID do Airflow:
+4. Remove the Airflow PID file:
 
     ```bash
     sudo rm -rf meltano/orchestrate/airflow-webserver.pid
     ```
 
-5. Reinicie os contêineres:
+5. Restart the containers:
 
     ```bash
     make up
     ```
 
-## Contribuição
+## Contribution
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+Contributions are welcome! Feel free to open issues and pull requests.
